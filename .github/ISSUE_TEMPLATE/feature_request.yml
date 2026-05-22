@@ -1,0 +1,38 @@
+name: Feature Request
+description: Suggest an improvement or new capability
+labels: ["enhancement", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please check existing issues and the README before submitting a feature request.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: Describe the gap or friction you are experiencing.
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      description: Describe your preferred solution, including any API shapes.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Are there workarounds? Why are they insufficient?
+
+  - type: checkboxes
+    id: license
+    attributes:
+      label: License acknowledgement
+      options:
+        - label: I understand that contributions to this project are licensed under AGPL-3.0-or-later.
+          required: true

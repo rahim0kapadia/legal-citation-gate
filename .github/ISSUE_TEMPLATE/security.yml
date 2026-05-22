@@ -1,0 +1,34 @@
+name: Security Vulnerability
+description: Report a security issue (use this ONLY for non-critical issues safe to discuss publicly)
+labels: ["security", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **For critical vulnerabilities, do NOT use this form.**
+        Email security@[yourdomain].com or use GitHub's private vulnerability reporting instead.
+
+        Use this form only for low-severity issues where public disclosure is acceptable.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Vulnerability description
+      description: Describe the issue, affected code paths, and potential impact.
+    validations:
+      required: true
+
+  - type: input
+    id: severity
+    attributes:
+      label: Estimated severity
+      placeholder: "Low / Medium"
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+    validations:
+      required: true

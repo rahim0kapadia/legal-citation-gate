@@ -1,0 +1,14 @@
+# Force LF line endings inside the git repo regardless of core.autocrlf.
+# Critical for LICENSE byte-fidelity against FSF canonical AGPL3.
+* text=auto eol=lf
+
+# LICENSE must be byte-identical to https://www.gnu.org/licenses/agpl-3.0.txt
+LICENSE text eol=lf
+
+# Binary files — never normalize
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary

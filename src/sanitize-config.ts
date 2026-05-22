@@ -7,6 +7,16 @@ import type { IOptions } from "sanitize-html";
  *
  * Extracted verbatim from INAA apps/web/src/lib/report/sanitize-config.ts
  * (AGPL-3.0-or-later, legal-citation-gate standalone library).
+ *
+ * Security notes:
+ * - The object is frozen at module load (`Object.freeze`) — mutating it at
+ *   runtime will throw in strict mode.
+ * - `allowedStyles` uses explicit regex allowlists; values not matching at
+ *   least one pattern are stripped by sanitize-html.
+ * - `allowedAttributes["*"]` includes `"style"` and `"id"`. If you embed
+ *   sanitized report HTML inside a document with privileged scripts, consider
+ *   adding a post-sanitize pass to strip or namespace `id` values.
+ *   See SECURITY.md § "Caller Responsibilities" for the full threat model.
  */
 export const reportSanitizeOptions: IOptions = Object.freeze({
   allowedTags: [

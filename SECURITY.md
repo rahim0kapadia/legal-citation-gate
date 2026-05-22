@@ -33,6 +33,35 @@ We follow a **90-day private disclosure window** by default:
 
 If a vulnerability is being actively exploited in the wild, we will accelerate the timeline. If the issue is purely theoretical and a patch lands quickly, we may shorten the window with the reporter's consent.
 
+## Security Model (OWASP Top 10 2021 Audit — 2026-05-22)
+
+This audit covers all `src/` files in `v0.0.1` against OWASP Top 10 2021. No CRITICALs found.
+
+### A03 Injection — Mitigated
+
+**HTML attribute injection** (`<cite>` re-emission): `escapeCiteAttr` (cite-tag-transform.ts) escapes `&`, `"`, `<`, `>` before emitting `data-entity-id` / `data-entity-type` values. Entity IDs are additionally validated against the caller-supplied `validIds` Set before any re-emission.
+
+**Badge HTML injection** (badge-transform.ts): `escapeAttr` is applied to all HTML attribute values; `escapeHtml` is applied to all text content. The badge label strips inner HTML tags before escaping, preventing nested-tag payloads from reaching the rendered span.
+
+**CSS injection** (sanitize-config.ts): `allowedStyles` uses explicit regex allowlists for every permitted CSS property. Values not matching at least one regex pattern are stripped by `sanitize-html`. Callers should review the allowlist for their specific deployment threat model (see "Caller Responsibilities" below).
+
+### A08 Software and Data Integrity — Mitigated
+
+- `reportSanitizeOptions` is `Object.freeze()`'d — runtime mutation is prevented.
+- npm provenance is enabled (`publishConfig.provenance: true`) — releases can be verified against this repo's CI via `npm audit signatures legal-citation-gate`.
+
+### Caller Responsibilities
+
+The library cannot protect against every misuse scenario. Adopters are responsible for:
+
+1. **DataAdapter input validation**: The `DataAdapter` interface returns `EntityRow[]` / `EntityConfidenceRow[]` etc. from the caller's data store. The library trusts these return values. If the backing data store is populated from untrusted external input (e.g. user-supplied entity IDs stored without sanitization), adopters must sanitize at write-time.
+
+2. **`allowedStyles` review**: `reportSanitizeOptions.allowedStyles` permits inline `style` attributes on all elements. If your deployment exposes report HTML to an environment where CSS `url()` data-URI injection is a concern (e.g. rendering HTML in a WebView with JavaScript access), review whether the CSS allowlist is sufficiently restrictive for your threat model.
+
+3. **`id` attribute scope**: `allowedAttributes["*"]` includes `"id"`. In browser environments, attacker-controlled `id` values can enable DOM clobbering attacks if report HTML is embedded alongside privileged script. Consider adding a post-sanitize pass that strips or prefixes `id` values if report HTML is embedded in a sensitive context.
+
+4. **Reference adapter security**: `examples/supabase-adapter.ts` passes charge arrays directly to PostgREST query parameters. The PostgREST client handles parameterization; do not construct raw SQL from charge strings.
+
 ## Scope
 
 **In scope:**

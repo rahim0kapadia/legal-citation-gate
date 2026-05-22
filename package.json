@@ -24,8 +24,9 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "test": "vitest run",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
     "lint": "tsc --noEmit -p tsconfig.json",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "pnpm run build"
   },
   "keywords": [
     "legal-tech",
@@ -50,5 +51,15 @@
   "publishConfig": {
     "access": "public",
     "provenance": true
+  },
+  "peerDependencies": {
+    "sanitize-html": ">=2.11"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/sanitize-html": "^2.11.0",
+    "sanitize-html": "^2.13.0",
+    "typescript": "^5.5.0",
+    "vitest": "^1.6.0"
   }
 }

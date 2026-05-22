@@ -19,18 +19,60 @@ The library is **adapter-based**: it does not depend on Supabase, Postgres, or a
 
 ## Why AGPL3 (and the commercial license)
 
-This library is **AGPL-3.0-or-later**. That is a deliberate choice, not an accident. Two reasons:
+This library is **AGPL-3.0-or-later**. That is a deliberate choice, not an accident.
 
-1. **Industry-floor lift.** Legal-tech vendors building AI-output validators all face the same problem this library solves. AGPL3 means every adopter improves the floor — bug fixes and corpus-shape improvements have to flow back. That serves criminal defendants (the eventual end-users) better than a permissive license would.
-2. **Network-use transparency.** AGPL3 §13 means a SaaS adopter that modifies the library and exposes its functionality over a network must publish their source. For legal-tech, that's a feature: defendants relying on AI-validated citations deserve to know which validator their vendor is running.
+### The problem this license solves
 
-**If AGPL3's network-use clause is a blocker for your use case**, three paths exist:
+Criminal defendants are the end-users of every report that a legal-tech AI pipeline produces. When an
+AI system invents a citation — cites a case that does not exist, or misrepresents a real holding — and
+the validation layer lets it through, the defendant carries the cost: wasted attorney-review time, a
+collapsed motion, or worse, an unchallenged misrepresentation in court. The validation infrastructure
+that keeps that from happening should be visible, auditable, and improvable by the legal-tech ecosystem
+at large. AGPL3 is the license that makes that happen.
 
-- **Adopt the commercial license** — see [`COMMERCIAL-LICENSE.md`](./COMMERCIAL-LICENSE.md). Dual-license offering for vendors who cannot ship under AGPL3.
-- **Adopt the schema + adapter interface only** — the `DataAdapter` shape, the `EntityConfidenceRow` type, and the `schema/v_entity_confidence.sample.sql` reference matview are documented specifications. Implement them against your own code; that integration is not a derivative work.
-- **Rebuild internally** — the design is documented end-to-end in this README and the upstream tactical plan. Bootstrap your own implementation.
+### Two specific reasons for this choice
 
-Prior art that informed this choice: Will Chen's Mike project (https://github.com/willchen/mike) — same shape, same license.
+1. **Industry-floor lift.** Every legal-tech vendor building an AI report pipeline faces the same three
+   problems this library solves: (a) the LLM invents entity IDs; (b) the LLM emits valid-looking
+   `<cite>` tags whose inner text does not match the cited entity; (c) the confidence metadata is buried
+   in the DB and never surfaces to the reader. AGPL3 means every adopter's improvements flow back. Bug
+   fixes to the whitelist-building path, new adapter shapes, confidence-band tuning, accessibility
+   improvements to the badge renderer — all of it compounds into a shared floor that every legal-tech
+   vendor and every defendant benefits from. A permissive license would let vendors silently diverge and
+   the floor stagnates.
+
+2. **Network-use transparency.** AGPL3 §13 closes the "hosted service" loophole. A SaaS adopter who
+   modifies this library and exposes citation-validation functionality over a network must publish their
+   modified source. For legal-tech, this is a feature, not a tax. Defendants relying on AI-validated
+   citations deserve to know which validator their vendor is running, at which version, with which
+   whitelist-building strategy. §13 makes that an obligation rather than a courtesy.
+
+### Three paths if AGPL3's network-use clause is a blocker
+
+- **Path A — Commercial license.** See [`COMMERCIAL-LICENSE.md`](./COMMERCIAL-LICENSE.md). A
+  dual-license offering for vendors who cannot ship under AGPL3 — typically because they have a
+  proprietary adapter, a custom confidence-level scheme, or a modified badge renderer they are not
+  willing to open-source. The commercial license removes the §13 obligation in exchange for a
+  negotiated fee.
+
+- **Path B — Adopt the interface, not the implementation.** The `DataAdapter` interface, the
+  `EntityConfidenceRow` type definition, and the `schema/v_entity_confidence.sample.sql` reference
+  matview are documented specifications. Implement them yourself against your own codebase. An
+  integration that only conforms to the interface is not a derivative work of this library.
+
+- **Path C — Rebuild from the documented design.** This README, the inline code comments, and the
+  upstream tactical plan document the architecture end-to-end: why the whitelist has two lookup paths
+  (charge-specific + general top-cited fallback), why the confidence levels collapse to three UI tiers,
+  why `stripInvalidCiteTags` runs post-generation rather than at render time. Bootstrap your own
+  implementation. The library's purpose is to improve the industry floor; that goal is served whether
+  you adopt, adapt, or rebuild with the knowledge.
+
+### Prior art
+
+Will Chen's **Mike** project (https://github.com/willchen/mike) pursued the same shape — a
+defense-in-depth citation validator for AI-generated content — under AGPL3 for the same reasons. Mike
+informed the choice of license and the principle of making the interface itself a separately adoptable
+surface so teams who cannot use the library can still use the schema design.
 
 ## Cited contributors
 

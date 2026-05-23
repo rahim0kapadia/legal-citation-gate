@@ -1,6 +1,6 @@
 {
   "name": "legal-citation-gate",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Citation-validator pipeline for legal-tech reports — entity whitelist, cite-tag transform, confidence-tier rendering. Adapter-based (BYO data source).",
   "license": "AGPL-3.0-or-later",
   "type": "module",

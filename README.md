@@ -2,9 +2,33 @@
 
 Citation-validator infrastructure for legal-tech reports — the layer that decides which `<cite data-entity-id>` tags survive sanitization, which ones get rendered as confidence-tier badges, and which ones get stripped because the cited entity is not in the whitelist.
 
-> **Status: 0.0.1 — extraction in progress. NOT YET RELEASED on npm.**
+> **Status: v0.1.5 — released via GitHub. npm publish deferred (see [`docs/deferred-npm-publish.md`](./docs/deferred-npm-publish.md)).**
 >
-> This repository is the in-flight extraction of the citation-validator pipeline from ImNotAnAttorney's production report generator (PR #56 + descendants) into a standalone library. The first npm release is gated on (a) source extraction (Wave B), (b) test suite pass, (c) `security-auditor` clean, and (d) Rahim legal-review checkpoint A (AGPL3 dual-license sign-off). See the tactical plan at `docs/plans/2026-05-22-mike-phase5-citation-validator-tactical.md` in the upstream consumer repo.
+> This is the public release of the citation-validator pipeline extracted from ImNotAnAttorney's production report generator (PR #56 + descendants). Wave A + Wave B shipped 2026-05-22, security-audited (T13) clean — 0 CRITICAL findings, 2 doc-only WARNINGs documented in [`SECURITY.md`](./SECURITY.md) as caller responsibilities. Distribution is currently GitHub-only; npm publish will follow when the maintainer creates an npm account.
+
+## Install
+
+Because this library is not yet on npm, install it directly from GitHub. Pin to a tag for reproducibility:
+
+```bash
+# pnpm
+pnpm add github:rahim0kapadia/legal-citation-gate#v0.1.5
+
+# npm
+npm install github:rahim0kapadia/legal-citation-gate#v0.1.5
+
+# yarn
+yarn add github:rahim0kapadia/legal-citation-gate#v0.1.5
+```
+
+This clones the repo into your `node_modules` and runs the `prepublishOnly` hook (`tsc`) to build `dist/`. The same `import` shapes work as if it were an npm dependency:
+
+```typescript
+import { buildEntityWhitelist, stripInvalidCiteTags, transformCiteTags, reportSanitizeOptions } from 'legal-citation-gate';
+import type { DataAdapter, EntityConfidenceRow, UITier } from 'legal-citation-gate';
+```
+
+Once this library is published to npm, the install command drops the `github:` prefix and the version pin moves to standard SemVer (`^0.1.5`). No code change required on the consumer side.
 
 ## What it does
 

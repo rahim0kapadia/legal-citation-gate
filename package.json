@@ -1,6 +1,6 @@
 {
   "name": "legal-citation-gate",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Citation-validator pipeline for legal-tech reports — entity whitelist, cite-tag transform, confidence-tier rendering. Adapter-based (BYO data source).",
   "license": "AGPL-3.0-or-later",
   "type": "module",
@@ -26,6 +26,7 @@
     "test": "vitest run",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "lint": "tsc --noEmit -p tsconfig.json",
+    "prepare": "tsc -p tsconfig.json",
     "prepublishOnly": "pnpm run build"
   },
   "keywords": [

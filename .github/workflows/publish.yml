@@ -21,7 +21,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "24"
           cache: "pnpm"
           registry-url: "https://registry.npmjs.org"
 
@@ -34,8 +34,8 @@ jobs:
       - name: Build
         run: pnpm run build
 
-      - name: Publish (with provenance)
-        run: npm publish --provenance --access public
+      - name: Publish (first publish — no provenance, NPM_TOKEN auth)
+        run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

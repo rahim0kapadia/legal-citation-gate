@@ -1,6 +1,6 @@
 {
   "name": "legal-citation-gate",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Citation-validator pipeline for legal-tech reports — entity whitelist, cite-tag transform, confidence-tier rendering. Adapter-based (BYO data source).",
   "license": "AGPL-3.0-or-later",
   "type": "module",
@@ -39,18 +39,17 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/TBD/legal-citation-gate.git"
+    "url": "git+https://github.com/rahim0kapadia/legal-citation-gate.git"
   },
   "bugs": {
-    "url": "https://github.com/TBD/legal-citation-gate/issues"
+    "url": "https://github.com/rahim0kapadia/legal-citation-gate/issues"
   },
-  "homepage": "https://github.com/TBD/legal-citation-gate#readme",
+  "homepage": "https://github.com/rahim0kapadia/legal-citation-gate#readme",
   "engines": {
     "node": ">=20"
   },
   "publishConfig": {
-    "access": "public",
-    "provenance": true
+    "access": "public"
   },
   "peerDependencies": {
     "sanitize-html": ">=2.11"
